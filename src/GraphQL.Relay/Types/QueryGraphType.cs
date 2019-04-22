@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using GraphQL.Relay.Contract;
+using GraphQL.Types;
 
 namespace GraphQL.Relay.Types
 {
@@ -19,9 +20,12 @@ namespace GraphQL.Relay.Types
         {
             var globalId = context.GetArgument<string>("id");
             var parts = Node.FromGlobalId(globalId);
-            var node = (IRelayNode<object>) context.Schema.FindType(parts.Type);
+            var node = context.Schema.FindType(parts.Type);
 
-            return node.GetById(parts.Id);
+            if (node is IRelayNodeObject<object> contextRelayNode)
+                return contextRelayNode.GetById(parts.Id, context);
+
+            return ((IRelayNode<object>) node).GetById(parts.Id);
         }
     }
 }
