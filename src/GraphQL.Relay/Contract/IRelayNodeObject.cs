@@ -2,7 +2,7 @@
 
 namespace GraphQL.Relay.Contract
 {
-    internal interface IRelayNodeObject<out T>
+    public interface IRelayNodeObject<out T>
     {
         T GetById(string partsId, ResolveFieldContext<object> context);
     }
